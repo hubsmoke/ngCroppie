@@ -30,7 +30,8 @@
                 orientation: '@',
                 update: '=',
                 ngModel: '=',
-                mobile: '@'
+                mobile: '@',
+                ref: '='
             },
             link: function (scope, elem, attr) {
                 // defaults
@@ -80,7 +81,7 @@
                     mouseWheelZoom: mouseZoom,
                     showZoomer: zoomSlider,
                     enableExif: scope.exif,
-                    enforceBoundary: scope.enforceBoundary,
+                    enforceBoundary: true,
                     enableOrientation: scope.orientation
                 };
 
@@ -109,6 +110,8 @@
                         });
                     }, 100);
                 }, false);
+
+                scope.ref = c;
 
                 // check mouseZoom property to avoid needless event listener initialization
                 // separated "wheel" event listener to prevent conflict with Croppie default "wheel" event listener
