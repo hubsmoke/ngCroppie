@@ -34,6 +34,7 @@
                 ref: '='
             },
             link: function (scope, elem, attr) {
+
                 // defaults
                 if (typeof scope.viewport === 'undefined') {
                     scope.viewport = { w: null, h: null };
@@ -66,6 +67,7 @@
                     mouseZoom = (scope.mousezoom === 'true' || typeof scope.mousezoom === 'undefined'),
                     zoomSlider = (scope.zoomslider === 'true' || typeof scope.zoomslider === 'undefined');
 
+
                 // define options
                 var options = {
                     viewport: {
@@ -80,7 +82,7 @@
                     enableZoom: zoom,
                     mouseWheelZoom: mouseZoom,
                     showZoomer: zoomSlider,
-                    enableExif: scope.exif,
+                    enableExif: true,
                     enforceBoundary: true,
                     enableOrientation: scope.orientation
                 };
@@ -153,26 +155,29 @@
                     clearInterval(intervalID);
                 });
 
-                // image rotation
-                scope.$watch('rotation', function(newValue, oldValue) {
-                    if (scope.orientation === 'false' || typeof scope.orientation === 'undefined') {
-                        throw 'ngCroppie: Cannot rotate without \'orientation\' option';
-                    } else {
-                        c.rotate(newValue - oldValue);
-                        c.result('canvas').then(function(img) {
-                            scope.$apply(function () {
-                                scope.ngModel = img;
-                            });
-                        });
-                    }
-                });
+                // // image rotation
+                // scope.$watch('rotation', function(newValue, oldValue) {
+                //     if (scope.orientation === 'false' || typeof scope.orientation === 'undefined') {
+                //         throw 'ngCroppie: Cannot rotate without \'orientation\' option';
+                //     } else {
+                //         c.rotate(newValue - oldValue);
+                //         c.result('canvas').then(function(img) {
+                //             scope.$apply(function () {
+                //                 scope.ngModel = img;
+                //             });
+                //         });
+                //     }
+                // });
 
                 // respond to changes in src
                 scope.$watch('src', function(newValue, oldValue) {
                     if (typeof scope.src === 'undefined') {
                         throw 'ngCroppie: Image source undefined!'
                     } else {
-                        c.bind(scope.src);
+                        if (scope.src) {
+                            c.bind(scope.src);
+                        }
+
                         window.setInterval(function() {  // force delay for the ng-file-upload
                             c.result('canvas').then(function(img) {
                                 scope.$apply(function () {
